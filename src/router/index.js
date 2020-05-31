@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import UserStore from '@/store/user';
+import Auth from '@/store/auth';
 import Login from '@/views/Login.vue';
 
 Vue.use(VueRouter);
@@ -25,7 +25,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = UserStore.state.token !== null;
+  const isAuthenticated = Auth.state.token !== null;
   if (to.name !== 'Login' && !isAuthenticated) {
     next({ name: 'Login' });
   } else {

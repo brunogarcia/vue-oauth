@@ -58,8 +58,8 @@ export default {
   },
 
   data: () => ({
-    username: '',
-    password: '',
+    username: 'test',
+    password: '1234',
     showPassword: false,
     loginFail: false,
     loginFailMessage: '',
@@ -97,7 +97,7 @@ export default {
 
   methods: {
     ...mapActions({
-      login: 'user/login',
+      login: 'auth/login',
     }),
 
     async submit() {

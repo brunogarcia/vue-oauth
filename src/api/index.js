@@ -3,12 +3,30 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8010/proxy';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
+const API = 'api';
+const VERSION = 'v1';
+
 const endpoints = {
   auth: {
     main: 'auth',
     login: 'login',
   },
+  sensors: 'sensors',
 };
+
+/**
+ * Get the authorization header
+ *
+ * @param {string} token - the auth token
+ * @returns {object} - The authorization header
+ */
+function getAuthorizationHeader(token) {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+}
 
 /**
  * Login
@@ -41,6 +59,32 @@ async function login(payload) {
   }
 }
 
+/**
+ * Retreive the sensors
+ *
+ * @param {object} payload - The payload request
+ * @param {string} payload.token - The username
+ * @returns {Promise} - The endpoint response
+ */
+async function retreiveSensors(payload) {
+  try {
+    const {
+      token,
+    } = payload;
+
+    const {
+      sensors,
+    } = endpoints;
+
+    const { data } = await axios.get(`/${API}/${VERSION}/${sensors}`, getAuthorizationHeader(token));
+
+    return data;
+  } catch (error) {
+    throw new Error('There was a problem when we have tried to retrieve the sensors');
+  }
+}
+
 export default {
   login,
+  retreiveSensors,
 };
