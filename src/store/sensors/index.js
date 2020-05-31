@@ -1,11 +1,15 @@
 import api from '@/api';
 import types from './types';
 
-const { SAVE_SENSORS } = types;
+const {
+  SAVE_SENSOR,
+  SAVE_SENSORS,
+} = types;
 
 export default {
   namespaced: true,
   state: {
+    sensor: [],
     sensors: [],
   },
   actions: {
@@ -15,7 +19,7 @@ export default {
      * @param {object} context - Vuex context
      * @param {Function} context.commit - Vuex commit
      * @param {object} context.rootGetters - modules getters from Vuex
-     * @returns {boolean} - The response flag
+     * @returns {boolean|Error} - The response flag
      */
     async retreiveSensors({ commit, rootGetters }) {
       try {
@@ -27,8 +31,38 @@ export default {
         throw new Error('There was a problem when we have tried to retrieve the sensors');
       }
     },
+
+    /**
+     * Retreive a sensor
+     *
+     * @param {object} context - Vuex context
+     * @param {Function} context.commit - Vuex commit
+     * @param {object} context.rootGetters - modules getters from Vuex
+     * @param {string} id - The sensor id
+     * @returns {boolean|Error} - The response flag
+     */
+    async retreiveSensor({ commit, rootGetters }, id) {
+      try {
+        const token = rootGetters['auth/token'];
+        const response = await api.retreiveSensor({ id, token });
+        commit(SAVE_SENSOR, response);
+        return true;
+      } catch (error) {
+        throw new Error(`There was a problem when we have tried to retrieve the sensor with id ${id}`);
+      }
+    },
   },
   mutations: {
+    /**
+     * Save sensor
+     *
+     * @param {object} state - Vuex state
+     * @param {object} payload - The sensor to store
+     */
+    [SAVE_SENSOR](state, payload) {
+      state.sensor = payload;
+    },
+
     /**
      * Save sensors
      *
@@ -40,6 +74,14 @@ export default {
     },
   },
   getters: {
+    /**
+     * Sensor
+     *
+     * @param {object} state - The module state
+     * @returns {object} - The sensor stored
+     */
+    sensor: (state) => state.sensor,
+
     /**
      * Sensors
      *

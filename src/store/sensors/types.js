@@ -1,5 +1,7 @@
+const SAVE_SENSOR = 'SAVE_SENSOR';
 const SAVE_SENSORS = 'SAVE_SENSORS';
 
 export default {
+  SAVE_SENSOR,
   SAVE_SENSORS,
 };

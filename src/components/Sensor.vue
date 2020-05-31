@@ -10,10 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="sensor in sensors"
-          :key="sensor.id"
-        >
+        <tr>
           <td>{{ sensor.id }}</td>
           <td>{{ sensor.description }}</td>
           <td>{{ sensor.samplingPeriod }}</td>
@@ -46,11 +43,11 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Dashboard',
+  name: 'Sensor',
 
   computed: {
     ...mapGetters({
-      sensors: 'sensors/sensors',
+      sensor: 'sensors/sensor',
     }),
   },
 };

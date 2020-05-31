@@ -63,7 +63,7 @@ async function login(payload) {
  * Retreive the sensors
  *
  * @param {object} payload - The payload request
- * @param {string} payload.token - The username
+ * @param {string} payload.token - The auth token
  * @returns {Promise} - The endpoint response
  */
 async function retreiveSensors(payload) {
@@ -84,7 +84,35 @@ async function retreiveSensors(payload) {
   }
 }
 
+/**
+ * Retreive a sensor
+ *
+ * @param {object} payload - The payload request
+ * @param {string} payload.id - The sensor id
+ * @param {string} payload.token - The auth token
+ * @returns {Promise} - The endpoint response
+ */
+async function retreiveSensor(payload) {
+  try {
+    const {
+      id,
+      token,
+    } = payload;
+
+    const {
+      sensors,
+    } = endpoints;
+
+    const { data } = await axios.get(`/${API}/${VERSION}/${sensors}/${id}`, getAuthorizationHeader(token));
+
+    return data;
+  } catch (error) {
+    throw new Error(`There was a problem when we have tried to retrieve the sensor with id ${payload.id}`);
+  }
+}
+
 export default {
   login,
   retreiveSensors,
+  retreiveSensor,
 };

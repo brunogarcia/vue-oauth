@@ -17,7 +17,7 @@ export default {
      * @param {object} payload - The payload request
      * @param {string} payload.username - The username
      * @param {string} payload.password - The password
-     * @returns {boolean} - The response flag
+     * @returns {boolean|Error} - The response flag
      */
     async login({ commit }, payload) {
       try {

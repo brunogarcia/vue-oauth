@@ -16,6 +16,11 @@ const routes = [
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
   },
+  {
+    path: '/sensors/:id',
+    name: 'Sensors',
+    component: () => import(/* webpackChunkName: "sensors" */ '../views/Sensors.vue'),
+  },
 ];
 
 const router = new VueRouter({

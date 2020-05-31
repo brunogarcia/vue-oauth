@@ -15,8 +15,8 @@
         cols="8"
         offset-md="2"
       >
-        <h2 class="headline mb-4">Sensors</h2>
-        <Sensors/>
+        <h2 class="headline mb-4">Sensor</h2>
+        <Sensor/>
       </v-col>
     </v-row>
   </v-container>
@@ -24,13 +24,13 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Sensors from '@/components/Sensors.vue';
+import Sensor from '@/components/Sensor.vue';
 
 export default {
-  name: 'DashboardView',
+  name: 'SensorsView',
 
   components: {
-    Sensors,
+    Sensor,
   },
 
   data: () => ({
@@ -45,12 +45,13 @@ export default {
 
   methods: {
     ...mapActions({
-      retreiveSensors: 'sensors/retreiveSensors',
+      retreiveSensor: 'sensors/retreiveSensor',
     }),
 
     async initData() {
       try {
-        const response = await this.retreiveSensors();
+        const { id } = this.$route.params;
+        const response = await this.retreiveSensor(id);
 
         if (response) {
           this.isReady = true;
