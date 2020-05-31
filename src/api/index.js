@@ -76,7 +76,10 @@ async function retreiveSensors(payload) {
       sensors,
     } = endpoints;
 
-    const { data } = await axios.get(`/${API}/${VERSION}/${sensors}`, getAuthorizationHeader(token));
+    const { data } = await axios.get(
+      `/${API}/${VERSION}/${sensors}`,
+      getAuthorizationHeader(token),
+    );
 
     return data;
   } catch (error) {
@@ -103,7 +106,10 @@ async function retreiveSensor(payload) {
       sensors,
     } = endpoints;
 
-    const { data } = await axios.get(`/${API}/${VERSION}/${sensors}/${id}`, getAuthorizationHeader(token));
+    const { data } = await axios.get(
+      `/${API}/${VERSION}/${sensors}/${id}`,
+      getAuthorizationHeader(token),
+    );
 
     return data;
   } catch (error) {
@@ -111,8 +117,40 @@ async function retreiveSensor(payload) {
   }
 }
 
+/**
+ * Update sensor
+ *
+ * @param {object} payload - The payload request
+ * @param {object} payload.sensor - The sensor to save
+ * @param {string} payload.token - The auth token
+ * @returns {Promise} - The endpoint response
+ */
+async function updateSensor(payload) {
+  try {
+    const {
+      sensor,
+      token,
+    } = payload;
+
+    const {
+      sensors,
+    } = endpoints;
+
+    const { data } = await axios.put(
+      `/${API}/${VERSION}/${sensors}/${sensor.id}`,
+      sensor,
+      getAuthorizationHeader(token),
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`There was a problem when we have tried to save the sensor with id ${payload.sensor.id}`);
+  }
+}
+
 export default {
   login,
   retreiveSensors,
   retreiveSensor,
+  updateSensor,
 };

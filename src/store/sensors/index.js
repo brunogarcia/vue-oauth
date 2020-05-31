@@ -2,9 +2,9 @@ import api from '@/api';
 import types from './types';
 
 const {
-  STORE_SENSOR,
-  STORE_SENSOR_ITEM,
-  STORE_SENSORS,
+  SAVE_SENSOR,
+  SAVE_SENSORS,
+  SAVE_SENSOR_ITEM,
 } = types;
 
 export default {
@@ -26,7 +26,7 @@ export default {
       try {
         const token = rootGetters['auth/token'];
         const response = await api.retreiveSensors({ token });
-        commit(STORE_SENSORS, response);
+        commit(SAVE_SENSORS, response);
         return true;
       } catch (error) {
         throw new Error('There was a problem when we have tried to retrieve the sensors');
@@ -46,7 +46,7 @@ export default {
       try {
         const token = rootGetters['auth/token'];
         const response = await api.retreiveSensor({ id, token });
-        commit(STORE_SENSOR, response);
+        commit(SAVE_SENSOR, response);
         return true;
       } catch (error) {
         throw new Error(`There was a problem when we have tried to retrieve the sensor with id ${id}`);
@@ -54,7 +54,27 @@ export default {
     },
 
     /**
-     * Save sensor item
+     * Update a sensor on the DB
+     *
+     * @param {object} context - Vuex context
+     * @param {Function} context.commit - Vuex commit
+     * @param {object} context.rootGetters - modules getters from Vuex
+     * @param {object} sensor - The sensor to save
+     * @returns {boolean|Error} - The response flag
+     */
+    async updateSensor({ commit, rootGetters }, sensor) {
+      try {
+        const token = rootGetters['auth/token'];
+        const response = await api.updateSensor({ sensor, token });
+        commit(SAVE_SENSOR, response);
+        return true;
+      } catch (error) {
+        throw new Error(`There was a problem when we have tried to save the sensor with id ${sensor.id}`);
+      }
+    },
+
+    /**
+     * Save sensor item on Vuex
      *
      * @param {object} context - Vuex context
      * @param {Function} context.commit - Vuex commit
@@ -62,38 +82,38 @@ export default {
      * @returns {boolean|Error} - The response flag
      */
     saveSensorItem({ commit }, item) {
-      commit(STORE_SENSOR_ITEM, item);
+      commit(SAVE_SENSOR_ITEM, item);
       return true;
     },
   },
   mutations: {
     /**
-     * Save sensor
+     * Save sensor on Vuex
      *
      * @param {object} state - Vuex state
      * @param {object} payload - The sensor to store
      */
-    [STORE_SENSOR](state, payload) {
+    [SAVE_SENSOR](state, payload) {
       state.sensor = payload;
     },
 
     /**
-     * Save sensor item
+     * Save sensor item on Vuex
      *
      * @param {object} state - Vuex state
      * @param {string} item - The item to store
      */
-    [STORE_SENSOR_ITEM](state, item) {
+    [SAVE_SENSOR_ITEM](state, item) {
       state.sensor = { ...state.sensor, ...item };
     },
 
     /**
-     * Save sensors
+     * Save sensors on Vuex
      *
      * @param {object} state - Vuex state
      * @param {object} payload - The sensors to store
      */
-    [STORE_SENSORS](state, payload) {
+    [SAVE_SENSORS](state, payload) {
       state.sensors = payload;
     },
   },

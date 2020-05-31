@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-row v-if="loginFail">
+    <v-row v-if="isError">
       <v-col
         cols="6"
         offset-md="3"
       >
         <v-alert type="error">
-          {{ loginFailMessage }}
+          {{ errorMessage }}
         </v-alert>
       </v-col>
     </v-row>
@@ -61,8 +61,8 @@ export default {
     username: 'test',
     password: '1234',
     showPassword: false,
-    loginFail: false,
-    loginFailMessage: '',
+    isError: false,
+    errorMessage: '',
   }),
 
   computed: {
@@ -109,14 +109,14 @@ export default {
 
         if (response) {
           this.$router.push({
-            path: 'dashboard',
+            path: '/dashboard',
           });
         }
 
         return true;
       } catch (error) {
-        this.loginFail = true;
-        this.loginFailMessage = error.message;
+        this.isError = true;
+        this.errorMessage = error.message;
 
         return false;
       }

@@ -1,6 +1,14 @@
 <template>
   <form>
     <h2 class="headline mb-4">Sensor #{{ id }}</h2>
+
+    <v-alert
+      v-if="isError"
+      type="error"
+    >
+      {{ errorMessage }}
+    </v-alert>
+
     <v-switch
       v-model="isActive"
       label="Does this sensor is active?"
@@ -28,6 +36,11 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'Sensor',
+
+  data: () => ({
+    isError: false,
+    errorMessage: '',
+  }),
 
   computed: {
     ...mapState(['sensors']),
@@ -68,24 +81,29 @@ export default {
 
   methods: {
     ...mapActions({
-      saveSensor: 'sensors/saveSensor',
+      updateSensor: 'sensors/updateSensor',
       saveSensorItem: 'sensors/saveSensorItem',
     }),
 
     async onSave() {
       try {
-        const response = await this.saveSensor();
+        const response = await this.updateSensor({
+          id: this.id,
+          description: this.description,
+          isActive: this.isActive,
+          samplingPeriod: this.samplingPeriod,
+        });
 
         if (response) {
           this.$router.push({
-            path: 'dashboard',
+            path: '/dashboard',
           });
         }
 
         return true;
       } catch (error) {
-        this.loginFail = true;
-        this.loginFailMessage = error.message;
+        this.isError = true;
+        this.errorMessage = error.message;
 
         return false;
       }
