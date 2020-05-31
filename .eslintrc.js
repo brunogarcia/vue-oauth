@@ -6,10 +6,14 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    'plugin:jsdoc/recommended',
   ],
   parserOptions: {
     parser: 'babel-eslint',
   },
+  plugins: [
+    'jsdoc',
+  ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
