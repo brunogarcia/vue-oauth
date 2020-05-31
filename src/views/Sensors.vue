@@ -15,7 +15,6 @@
         cols="8"
         offset-md="2"
       >
-        <h2 class="headline mb-4">Sensor</h2>
         <Sensor/>
       </v-col>
     </v-row>

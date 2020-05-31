@@ -36,7 +36,7 @@
             @click:append="showPassword = !showPassword"
           />
 
-          <v-btn class="mr-4" @click="submit">Login</v-btn>
+          <v-btn class="mr-4" @click="onLogin">Login</v-btn>
         </form>
       </v-col>
     </v-row>
@@ -100,7 +100,7 @@ export default {
       login: 'auth/login',
     }),
 
-    async submit() {
+    async onLogin() {
       try {
         const response = await this.login({
           username: this.username,

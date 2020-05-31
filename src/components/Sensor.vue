@@ -1,54 +1,95 @@
 <template>
-  <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">Id</th>
-          <th class="text-left">Description</th>
-          <th class="text-left">Sampling period</th>
-          <th class="text-left">Active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ sensor.id }}</td>
-          <td>{{ sensor.description }}</td>
-          <td>{{ sensor.samplingPeriod }}</td>
-          <td>
-              <v-chip
-                v-if="sensor.isActive"
-                small
-                color="green"
-                text-color="white"
-            >
-              <v-icon>mdi-check</v-icon>
-            </v-chip>
+  <form>
+    <h2 class="headline mb-4">Sensor #{{ id }}</h2>
+    <v-switch
+      v-model="isActive"
+      label="Does this sensor is active?"
+    />
 
-              <v-chip
-                v-else
-                small
-                color="red"
-                text-color="white"
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-chip>
-          </td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
+    <v-text-field
+      outlined
+      type="number"
+      label="Sampling period"
+      v-model.number="samplingPeriod"
+    />
+
+    <v-textarea
+      outlined
+      label="Description"
+      v-model="description"
+    />
+
+    <v-btn class="mr-4" @click="onSave">Save</v-btn>
+  </form>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'Sensor',
 
   computed: {
-    ...mapGetters({
-      sensor: 'sensors/sensor',
+    ...mapState(['sensors']),
+
+    id: {
+      get() {
+        return this.sensors.sensor.id;
+      },
+    },
+
+    description: {
+      get() {
+        return this.sensors.sensor.description;
+      },
+      set(value) {
+        this.saveSensorItem({ description: value });
+      },
+    },
+
+    isActive: {
+      get() {
+        return this.sensors.sensor.isActive;
+      },
+      set(value) {
+        this.saveSensorItem({ isActive: value });
+      },
+    },
+
+    samplingPeriod: {
+      get() {
+        return this.sensors.sensor.samplingPeriod;
+      },
+      set(value) {
+        this.saveSensorItem({ samplingPeriod: value });
+      },
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      saveSensor: 'sensors/saveSensor',
+      saveSensorItem: 'sensors/saveSensorItem',
     }),
+
+    async onSave() {
+      try {
+        const response = await this.saveSensor();
+
+        if (response) {
+          this.$router.push({
+            path: 'dashboard',
+          });
+        }
+
+        return true;
+      } catch (error) {
+        this.loginFail = true;
+        this.loginFailMessage = error.message;
+
+        return false;
+      }
+    },
   },
 };
 </script>

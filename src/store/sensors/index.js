@@ -2,8 +2,9 @@ import api from '@/api';
 import types from './types';
 
 const {
-  SAVE_SENSOR,
-  SAVE_SENSORS,
+  STORE_SENSOR,
+  STORE_SENSOR_ITEM,
+  STORE_SENSORS,
 } = types;
 
 export default {
@@ -25,7 +26,7 @@ export default {
       try {
         const token = rootGetters['auth/token'];
         const response = await api.retreiveSensors({ token });
-        commit(SAVE_SENSORS, response);
+        commit(STORE_SENSORS, response);
         return true;
       } catch (error) {
         throw new Error('There was a problem when we have tried to retrieve the sensors');
@@ -45,11 +46,24 @@ export default {
       try {
         const token = rootGetters['auth/token'];
         const response = await api.retreiveSensor({ id, token });
-        commit(SAVE_SENSOR, response);
+        commit(STORE_SENSOR, response);
         return true;
       } catch (error) {
         throw new Error(`There was a problem when we have tried to retrieve the sensor with id ${id}`);
       }
+    },
+
+    /**
+     * Save sensor item
+     *
+     * @param {object} context - Vuex context
+     * @param {Function} context.commit - Vuex commit
+     * @param {string} item - The sensor item
+     * @returns {boolean|Error} - The response flag
+     */
+    saveSensorItem({ commit }, item) {
+      commit(STORE_SENSOR_ITEM, item);
+      return true;
     },
   },
   mutations: {
@@ -59,8 +73,18 @@ export default {
      * @param {object} state - Vuex state
      * @param {object} payload - The sensor to store
      */
-    [SAVE_SENSOR](state, payload) {
+    [STORE_SENSOR](state, payload) {
       state.sensor = payload;
+    },
+
+    /**
+     * Save sensor item
+     *
+     * @param {object} state - Vuex state
+     * @param {string} item - The item to store
+     */
+    [STORE_SENSOR_ITEM](state, item) {
+      state.sensor = { ...state.sensor, ...item };
     },
 
     /**
@@ -69,7 +93,7 @@ export default {
      * @param {object} state - Vuex state
      * @param {object} payload - The sensors to store
      */
-    [SAVE_SENSORS](state, payload) {
+    [STORE_SENSORS](state, payload) {
       state.sensors = payload;
     },
   },
