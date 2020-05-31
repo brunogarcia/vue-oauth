@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "concurrently --kill-others \"npm run proxy\" \"npm run dev\"",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "proxy": "lcp --proxyUrl http://localhost:8000"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "concurrently": "^5.2.0",
     "core-js": "^3.6.5",
+    "local-cors-proxy": "^1.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuelidate": "^0.7.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
   },
