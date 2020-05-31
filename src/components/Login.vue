@@ -1,5 +1,15 @@
 <template>
   <v-container>
+    <v-row v-if="loginFail">
+      <v-col
+        cols="6"
+        offset-md="3"
+      >
+        <v-alert type="error">
+          {{ loginFailMessage }}
+        </v-alert>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
         cols="6"
@@ -51,6 +61,8 @@ export default {
     username: '',
     password: '',
     showPassword: false,
+    loginFail: false,
+    loginFailMessage: '',
   }),
 
   computed: {
@@ -89,12 +101,25 @@ export default {
     }),
 
     async submit() {
-      const result = await this.login({
-        username: this.username,
-        password: this.password,
-      });
+      try {
+        const response = await this.login({
+          username: this.username,
+          password: this.password,
+        });
 
-      console.log(result);
+        if (response) {
+          this.$router.push({
+            path: 'dashboard',
+          });
+        }
+
+        return true;
+      } catch (error) {
+        this.loginFail = true;
+        this.loginFailMessage = error.message;
+
+        return false;
+      }
     },
   },
 };

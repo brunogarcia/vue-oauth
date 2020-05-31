@@ -19,22 +19,26 @@ const endpoints = {
  * @returns {Promise} - The endpoint response
  */
 async function login(payload) {
-  const {
-    username,
-    password,
-  } = payload;
+  try {
+    const {
+      username,
+      password,
+    } = payload;
 
-  const {
-    auth,
-  } = endpoints;
+    const {
+      auth,
+    } = endpoints;
 
-  const params = new URLSearchParams();
-  params.append('username', username);
-  params.append('password', password);
+    const params = new URLSearchParams();
+    params.append('username', username);
+    params.append('password', password);
 
-  const { data } = await axios.post(`/${auth.main}/${auth.login}`, params);
+    const { data } = await axios.post(`/${auth.main}/${auth.login}`, params);
 
-  return data;
+    return data;
+  } catch (error) {
+    throw new Error('The username or the password is not valid!');
+  }
 }
 
 export default {

@@ -6,7 +6,7 @@ const { SAVE_TOKEN } = types;
 export default {
   namespaced: true,
   state: {
-    token: {},
+    token: null,
   },
   actions: {
     /**
@@ -22,12 +22,10 @@ export default {
     async login({ commit }, payload) {
       try {
         const { access_token: accessToken } = await api.login(payload);
-        console.log(accessToken);
-
         commit(SAVE_TOKEN, accessToken);
         return true;
       } catch (error) {
-        return error;
+        throw new Error('The username or the password is not valid!');
       }
     },
   },
