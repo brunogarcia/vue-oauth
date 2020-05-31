@@ -2,8 +2,8 @@
   <v-container>
     <v-row v-if="isError">
       <v-col
-        cols="6"
-        offset-md="3"
+        cols="8"
+        offset-md="2"
       >
         <v-alert type="error">
           {{ errorMessage }}
@@ -12,9 +12,10 @@
     </v-row>
     <v-row v-if="isReady">
       <v-col
-        cols="6"
-        offset-md="3"
+        cols="8"
+        offset-md="2"
       >
+        <h2 class="headline mb-4">Sensors</h2>
         <Dashboard/>
       </v-col>
     </v-row>
