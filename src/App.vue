@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-        Vintra Dashboard
+        Dashboard
       </div>
     </v-app-bar>
 
