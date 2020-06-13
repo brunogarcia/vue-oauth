@@ -1,4 +1,4 @@
-# vintra-front-end
+# Vue OAuth
 
 ## Project setup
 ```
