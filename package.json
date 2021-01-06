@@ -11,7 +11,7 @@
     "proxy": "lcp --proxyUrl http://localhost:8000"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "concurrently": "^5.2.0",
     "core-js": "^3.6.5",
     "local-cors-proxy": "^1.1.0",
